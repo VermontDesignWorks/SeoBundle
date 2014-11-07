@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+
+<container
+        xmlns="http://symfony.com/schema/dic/services"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="cmf_seo.sitemap.controller.class">Symfony\Cmf\Bundle\SeoBundle\Controller\SitemapController</parameter>
+        <parameter key="cmf_seo.sitemap.route_generator.class">Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr\SitemapRouteGenerator</parameter>
+    </parameters>
+
+    <services>
+        <service id="cmf_seo.sitemap.route_generator" class="%cmf_seo.sitemap.route_generator.class%">
+            <argument type="service" id="doctrine_phpcr"/>
+        </service>
+        <service id="cmf_seo.sitemap.controller" class="%cmf_seo.sitemap.controller.class%">
+            <argument type="service" id="router" />
+        </service>
+    </services>
+</container>
