@@ -61,11 +61,23 @@ class SitemapControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testRequestXml()
     {
+        // preparing stuff
+        $container = $this->getMock('\Symfony\Component\DependencyInjection\ContainerInterface');
+        $this->controller->setContainer($container);
+        $templating = $this->getMock('EngineInterface', array('render'));
+        $container
+            ->expects($this->any())
+            ->method('get')
+            ->with($this->equalTo('templating'))
+            ->will($this->returnValue($templating))
+        ;
+        $response = new Response('some-xml-string');
+        $templating->expects($this->once())->method('render')->will($this->returnValue($response));
+
         /** @var Response $response */
         $response = $this->controller->indexAction('xml');
-        $expected = $this->getFileContent('xml');
 
-        $this->assertXmlStringEqualsXmlString($expected, $response->getContent());
+        $this->assertEquals('some-xml-string', $response->getContent());
     }
 
     public function testRequestHtml()
