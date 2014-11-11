@@ -1,12 +1,11 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\SeoBundle\Sitemap;
-use Symfony\Cmf\Bundle\SeoBundle\Model\AlternateLocale;
+namespace Symfony\Cmf\Bundle\SeoBundle\Model;
 
 /**
  * @author Maximilian Berghoff <Maximilian.Berghoff@gmx.de>
  */
-class UrlElement
+class UrlInformation
 {
     /**
      * @var string
@@ -14,12 +13,12 @@ class UrlElement
     private $loc;
 
     /**
-     * @var string One of the official/allowed.
+     * @var \DateTime
      */
     private $lastmod;
 
     /**
-     * @var \DateTime
+     * @var string One of the official/allowed.
      */
     private $changeFreq;
 
@@ -67,7 +66,7 @@ class UrlElement
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getChangeFreq()
     {
@@ -91,7 +90,7 @@ class UrlElement
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLastmod()
     {

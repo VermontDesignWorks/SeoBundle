@@ -3,16 +3,14 @@
 namespace Symfony\Cmf\Bundle\SeoBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Cmf\Bundle\SeoBundle\Sitemap\UrlElement;
-use Symfony\Cmf\Bundle\SeoBundle\SitemapRouteGenerator;
+use Symfony\Cmf\Bundle\SeoBundle\Sitemap\UrlInformation;
+use Symfony\Cmf\Bundle\SeoBundle\SitemapRouteProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * This controller will handle all request for the sitemap.
+ * Controller to handle requests for sitemap.
  *
- * Depending on the type the controller is able to respond
- * json, xml or html string.
  * @author Maximilian Berghoff <Maximilian.Berghoff@gmx.de>
  */
 class SitemapController extends Controller
@@ -22,14 +20,14 @@ class SitemapController extends Controller
     const TEMPLATE_XML = 'CmfSeoBundle:Sitemap:index.xml.twig';
 
     /**
-     * @var
+     * @var SitemapRouteProviderInterface
      */
     private $routeGenerator;
 
     /**
-     * @param SitemapRouteGenerator $routeGenerator
+     * @param SitemapRouteProviderInterface $routeGenerator
      */
-    public function __construct(SitemapRouteGenerator $routeGenerator)
+    public function __construct(SitemapRouteProviderInterface $routeGenerator)
     {
         $this->routeGenerator = $routeGenerator;
     }
@@ -65,7 +63,7 @@ class SitemapController extends Controller
     }
 
     /**
-     * @param array|UrlElement[] $urls
+     * @param array|UrlInformation[] $urls
      *
      * @return JsonResponse
      */

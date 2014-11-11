@@ -4,8 +4,8 @@ namespace Symfony\Cmf\Bundle\SeoBundle\Tests\Unit\Controller;
 
 use Symfony\Cmf\Bundle\SeoBundle\Controller\SitemapController;
 use Symfony\Cmf\Bundle\SeoBundle\Model\AlternateLocale;
-use Symfony\Cmf\Bundle\SeoBundle\Sitemap\UrlElement;
-use Symfony\Cmf\Bundle\SeoBundle\SitemapRouteGenerator;
+use Symfony\Cmf\Bundle\SeoBundle\Model\UrlInformation;
+use Symfony\Cmf\Bundle\SeoBundle\SitemapRouteProviderInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 class SitemapControllerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var SitemapRouteGenerator
+     * @var SitemapRouteProviderInterface
      */
     private $generator;
 
@@ -25,7 +25,7 @@ class SitemapControllerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->generator = $this->getMock('Symfony\Cmf\Bundle\SeoBundle\SitemapRouteGenerator');
+        $this->generator = $this->getMock('Symfony\Cmf\Bundle\SeoBundle\SitemapRouteProviderInterface');
         $this->createRoutes();
 
         $this->controller = new SitemapController($this->generator);
@@ -105,7 +105,7 @@ class SitemapControllerTest extends \PHPUnit_Framework_TestCase
     {
         $urls = array();
 
-        $simpleUrl = new UrlElement();
+        $simpleUrl = new UrlInformation();
         $simpleUrl
             ->setLoc('http://www.test-domain.de')
             ->setChangeFreq('always')
@@ -114,7 +114,7 @@ class SitemapControllerTest extends \PHPUnit_Framework_TestCase
             ->setLastmod(new \DateTime('2014-11-06', new \DateTimeZone('Europe/Berlin')))
         ;
 
-        $urlWithAlternateLocale = new UrlElement();
+        $urlWithAlternateLocale = new UrlInformation();
         $urlWithAlternateLocale
             ->setLoc('http://www.test-alternate-locale.de')
             ->setChangeFreq('never')

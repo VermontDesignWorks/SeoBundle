@@ -2,7 +2,7 @@
 
 namespace Symfony\Cmf\Bundle\SeoBundle;
 
-use Symfony\Component\Routing\Route;
+use Symfony\Cmf\Bundle\SeoBundle\Sitemap\UrlInformation;
 
 /**
  * Interface for all sitemap route generators.
@@ -13,13 +13,12 @@ use Symfony\Component\Routing\Route;
  *
  * @author Maximilian Berghoff <Maximilian.Berghoff@gmx.de>
  */
-interface SitemapRouteGenerator
+interface SitemapRouteProviderInterface
 {
     /**
      * Creates an array of route objects, which should be shown in a sitemap.
      *
-     * @return array|Route
+     * @return array|UrlInformation
      */
     public function generateRoutes();
 }
- 
