@@ -11,7 +11,8 @@
 
     <services>
         <service id="cmf_seo.sitemap.phpcr_provider" class="%cmf_seo.sitemap.phpcr_provider.class%">
-            <argument type="service" id="doctrine_phpcr"/>
+            <argument type="service" id="doctrine_phpcr.odm.default_document_manager"/>
+            <argument type="service" id="router" />
         </service>
     </services>
 </container>
