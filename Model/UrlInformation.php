@@ -8,6 +8,13 @@ namespace Symfony\Cmf\Bundle\SeoBundle\Model;
 class UrlInformation
 {
     /**
+     * Decides whether the content is visible on sitemap.
+     *
+     * @var bool
+     */
+    private $visible;
+
+    /**
      * @var string
      */
     private $loc;
@@ -45,6 +52,22 @@ class UrlInformation
     public function __construct()
     {
         $this->alternateLocales = array();
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isVisible()
+    {
+        return $this->visible;
+    }
+
+    /**
+     * @param boolean $visible
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
     }
 
     public function toArray()

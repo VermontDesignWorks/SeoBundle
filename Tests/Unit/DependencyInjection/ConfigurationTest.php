@@ -60,6 +60,9 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                 'enabled'  => false,
                 'provider_id' => null,
             ),
+            'sitemap' => array(
+                'enabled' => 'auto'
+            ),
             );
 
         $sources = array_map(function ($path) {

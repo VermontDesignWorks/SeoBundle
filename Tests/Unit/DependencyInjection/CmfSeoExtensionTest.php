@@ -51,8 +51,13 @@ class CmfSeoExtensionTest extends AbstractExtensionTestCase
             'description'   => 'Default description.',
             'persistence'   => array(
                 'phpcr' => true,
-            )
+            ),
         ));
+
+        $this->assertContainerBuilderHasService(
+            'cmf_seo.sitemap.phpcr_provider',
+            'Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr\SitemapRouteGenerator'
+        );
     }
 
     public function testPersistenceORM()
@@ -163,6 +168,7 @@ class CmfSeoExtensionTest extends AbstractExtensionTestCase
             )
         ));
     }
+
     public function testErrorHandlingPHPCR()
     {
         $this->container->setParameter(
@@ -190,6 +196,38 @@ class CmfSeoExtensionTest extends AbstractExtensionTestCase
             'cmf_seo.error.suggestion_provider.parent',
             'cmf_seo.suggestion_provider',
             array('group' => 'parent')
+        );
+    }
+
+    public function testSitemapConfiguration()
+    {
+        $this->container->setParameter(
+            'kernel.bundles',
+            array()
+        );
+        $this->load(array(
+            'sitemap'   => true,
+            'persistence'   => array(
+                'phpcr' => true,
+            ),
+        ));
+
+        $this->assertContainerBuilderHasService(
+            'cmf_seo.sitemap.controller',
+            'Symfony\Cmf\Bundle\SeoBundle\Sitemap\SitemapController'
+        );
+        $this->assertContainerBuilderHasService(
+            'cmf_seo.sitemap.chain_provider',
+            'Symfony\Cmf\Bundle\SeoBundle\Sitemap\ChainProvider'
+        );
+        $this->assertContainerBuilderHasService(
+            'cmf_seo.sitemap.phpcr_provider',
+            'Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr\SitemapRouteGenerator'
+        );
+        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+            'cmf_seo.sitemap.chain_provider',
+            'addProvider',
+            array($this->container->getDefinition('cmf_seo.sitemap.phpcr_provider'))
         );
     }
 }

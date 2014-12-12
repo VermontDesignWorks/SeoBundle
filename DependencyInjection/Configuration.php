@@ -85,6 +85,21 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('enable_sibling_provider')->defaultValue(false)->end()
                     ->end()
                 ->end()
+                ->arrayNode('sitemap')
+                    ->addDefaultsIfNotSet()
+                    ->beforeNormalization()
+                        ->ifTrue(function ($v) { return is_scalar($v); })
+                        ->then( function ($v) {
+                            return array('enabled' => $v);
+                        })
+                        ->end()
+                    ->children()
+                        ->enumNode('enabled')
+                            ->values(array(true, false, 'auto'))
+                            ->defaultValue('auto')
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
         ;
 

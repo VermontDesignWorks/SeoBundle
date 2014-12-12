@@ -5,7 +5,8 @@ namespace Symfony\Cmf\Bundle\SeoBundle\Tests\Unit\Controller;
 use Symfony\Cmf\Bundle\SeoBundle\Controller\SitemapController;
 use Symfony\Cmf\Bundle\SeoBundle\Model\AlternateLocale;
 use Symfony\Cmf\Bundle\SeoBundle\Model\UrlInformation;
-use Symfony\Cmf\Bundle\SeoBundle\SitemapRouteProviderInterface;
+use Symfony\Cmf\Bundle\SeoBundle\Sitemap\ChainProvider;
+use Symfony\Cmf\Bundle\SeoBundle\Sitemap\UrlInformationProviderInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -14,9 +15,9 @@ use Symfony\Component\HttpFoundation\Response;
 class SitemapControllerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var SitemapRouteProviderInterface
+     * @var UrlInformationProviderInterface
      */
-    private $generator;
+    private $provider;
 
     /**
      * @var SitemapController
@@ -25,10 +26,12 @@ class SitemapControllerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->generator = $this->getMock('Symfony\Cmf\Bundle\SeoBundle\SitemapRouteProviderInterface');
+        $this->provider = $this->getMock('Symfony\Cmf\Bundle\SeoBundle\Sitemap\UrlInformationProviderInterface');
+        $chain = new ChainProvider();
+        $chain->addProvider($this->provider);
         $this->createRoutes();
 
-        $this->controller = new SitemapController($this->generator);
+        $this->controller = new SitemapController($chain);
     }
 
     public function testRequestJson()
@@ -128,7 +131,7 @@ class SitemapControllerTest extends \PHPUnit_Framework_TestCase
         $urls[] = $urlWithAlternateLocale;
         $urls[] = $simpleUrl;
 
-        $this->generator->expects($this->any())->method('generateRoutes')->will($this->returnValue($urls));
+        $this->provider->expects($this->any())->method('generateRoutes')->will($this->returnValue($urls));
     }
 
     private function getFileContent($type)

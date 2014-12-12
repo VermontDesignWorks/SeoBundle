@@ -66,6 +66,7 @@ class CmfSeoExtension extends Extension
             $this->loadPhpcr($config['persistence']['phpcr'], $loader, $container);
 
             $loader->load('matcher_phpcr.xml');
+            $loader->load('phpcr-sitemap.xml');
         }
 
         if ($this->isConfigEnabled($container, $config['persistence']['orm'])) {
@@ -87,6 +88,10 @@ class CmfSeoExtension extends Extension
 
         $errorConfig = isset($config['error']) ? $config['error'] : array();
         $this->loadErrorHandling($errorConfig, $container);
+
+        if ($this->isConfigEnabled($container, $config['sitemap'])) {
+            $this->laodSitemapHandling($config['sitemap'], $loader, $container);
+        }
     }
 
     /**
@@ -214,6 +219,22 @@ class CmfSeoExtension extends Extension
             if ($container->has('cmf_seo.error.suggestion_provider.'.$group) && $remove) {
                 $container->removeDefinition('cmf_seo.error.suggestion_provider.'.$group);
             }
+        }
+    }
+
+    private function laodSitemapHandling($config, XmlFileLoader $loader, ContainerBuilder $container)
+    {
+        if ($config['enabled']) {
+            $loader->load('sitemap.xml');
+        }
+
+        if ($container->has('cmf_seo.sitemap.phpcr_provider')) {
+            $chainDefinition = $container->getDefinition('cmf_seo.sitemap.chain_provider');
+            $chainDefinition
+                ->addMethodCall(
+                    'addProvider',
+                    array($container->getDefinition('cmf_seo.sitemap.phpcr_provider'))
+                );
         }
     }
 }

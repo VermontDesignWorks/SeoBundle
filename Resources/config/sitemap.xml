@@ -6,16 +6,14 @@
         xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="cmf_seo.sitemap.controller.class">Symfony\Cmf\Bundle\SeoBundle\Controller\SitemapController</parameter>
-        <parameter key="cmf_seo.sitemap.route_generator.class">Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr\SitemapRouteGenerator</parameter>
+        <parameter key="cmf_seo.sitemap.controller.class">Symfony\Cmf\Bundle\SeoBundle\Sitemap\SitemapController</parameter>
+        <parameter key="cmf_seo.sitemap.chain_provider.class">Symfony\Cmf\Bundle\SeoBundle\Sitemap\ChainProvider</parameter>
     </parameters>
 
     <services>
-        <service id="cmf_seo.sitemap.route_generator" class="%cmf_seo.sitemap.route_generator.class%">
-            <argument type="service" id="doctrine_phpcr"/>
-        </service>
         <service id="cmf_seo.sitemap.controller" class="%cmf_seo.sitemap.controller.class%">
-            <argument type="service" id="router" />
+            <argument>cmf_seo.sitemap.chain_provider</argument>
         </service>
+        <service id="cmf_seo.sitemap.chain_provider" class="%cmf_seo.sitemap.chain_provider.class%" />
     </services>
 </container>

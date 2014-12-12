@@ -3,14 +3,14 @@
 namespace Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Symfony\Cmf\Bundle\SeoBundle\SitemapRouteProviderInterface;
+use Symfony\Cmf\Bundle\SeoBundle\Sitemap\UrlInformationProviderInterface;
 
 /**
  * The PHPCR implementation of the sitemap route generator.
  *
  * @author Maximilian Berghoff <Maximilian.Berghoff@gmx.de>
  */
-class SitemapRouteProvider implements SitemapRouteProviderInterface
+class SitemapRouteProvider implements UrlInformationProviderInterface
 {
     /**
      * @var ManagerRegistry
@@ -30,7 +30,9 @@ class SitemapRouteProvider implements SitemapRouteProviderInterface
      */
     public function generateRoutes()
     {
+        $routeInformation = array();
+
+
         return array();
     }
 }
- 
