@@ -12,7 +12,6 @@
         <testsuite name="phpcr">
             <directory>./Tests/WebTest</directory>
             <directory>./Tests/Functional/Doctrine/Phpcr</directory>
-            <directory>./Tests/Functional/Sitemap</directory>
         </testsuite>
 
         <testsuite name="orm">

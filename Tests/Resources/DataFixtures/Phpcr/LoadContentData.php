@@ -19,7 +19,6 @@ use Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr\SeoMetadata;
 use Symfony\Cmf\Bundle\SeoBundle\Tests\Resources\Document\AlternateLocaleContent;
 use Symfony\Cmf\Bundle\SeoBundle\Tests\Resources\Document\SeoAwareContent;
 use Symfony\Cmf\Bundle\SeoBundle\Tests\Resources\Document\ContentWithExtractors;
-use Symfony\Cmf\Bundle\SeoBundle\Tests\Resources\Document\SitemapAwareContent;
 
 class LoadContentData implements FixtureInterface
 {
