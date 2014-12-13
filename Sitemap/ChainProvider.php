@@ -11,10 +11,12 @@
 
 namespace Symfony\Cmf\Bundle\SeoBundle\Sitemap;
 
+use Symfony\Cmf\Bundle\SeoBundle\Model\UrlInformation;
+
 /**
  * @author Maximilian Berghoff <Maximilian.Berghoff@gmx.de>
  */
-class ChainProvider
+class ChainProvider implements UrlInformationProviderInterface
 {
     /**
      * @var UrlInformationProviderInterface[]
@@ -40,5 +42,19 @@ class ChainProvider
     public function addProvider(UrlInformationProviderInterface $provider)
     {
         $this->providers[] = $provider;
+    }
+
+    /**
+     * @return UrlInformation[]
+     */
+    public function generateRoutes()
+    {
+        $urlInformation = array();
+
+        foreach ($this->providers as $provider) {
+            $urlInformation = array_merge($urlInformation, $provider->generateRoutes());
+        }
+
+        return $urlInformation;
     }
 }

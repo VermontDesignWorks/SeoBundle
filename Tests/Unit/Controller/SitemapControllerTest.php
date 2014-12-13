@@ -33,12 +33,10 @@ class SitemapControllerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->provider = $this->getMock('Symfony\Cmf\Bundle\SeoBundle\Sitemap\UrlInformationProviderInterface');
-        $chain = new ChainProvider();
-        $chain->addProvider($this->provider);
         $this->createRoutes();
 
         $this->templating = $this->getMock('Symfony\Component\Templating\EngineInterface');
-        $this->controller = new SitemapController($chain, $this->templating);
+        $this->controller = new SitemapController($this->provider, $this->templating);
     }
 
     public function testRequestJson()

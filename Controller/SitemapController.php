@@ -13,6 +13,7 @@ namespace Symfony\Cmf\Bundle\SeoBundle\Controller;
 
 use Symfony\Cmf\Bundle\SeoBundle\Model\UrlInformation;
 use Symfony\Cmf\Bundle\SeoBundle\Sitemap\ChainProvider;
+use Symfony\Cmf\Bundle\SeoBundle\Sitemap\UrlInformationProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Templating\EngineInterface;
@@ -29,8 +30,8 @@ class SitemapController
     const TEMPLATE_XML = 'CmfSeoBundle:Sitemap:index.xml.twig';
 
     /**
-     * @var ChainProvider
-     */
+     * @var UrlInformationProviderInterface
+*/
     private $chainProvider;
     /**
      * @var EngineInterface
@@ -38,12 +39,12 @@ class SitemapController
     private $templating;
 
     /**
-     * @param ChainProvider $routeGenerator
+     * @param UrlInformationProviderInterface $provider
      * @param EngineInterface $templating
      */
-    public function __construct(ChainProvider $routeGenerator, EngineInterface $templating)
+    public function __construct(UrlInformationProviderInterface $provider, EngineInterface $templating)
     {
-        $this->chainProvider = $routeGenerator;
+        $this->chainProvider = $provider;
         $this->templating = $templating;
     }
 
@@ -55,10 +56,7 @@ class SitemapController
     public function indexAction($_format)
     {
         $response = null;
-        $urls = array();
-        foreach ($this->chainProvider->getProviders() as $provider) {
-            $urls = array_merge($urls, $provider->generateRoutes());
-        }
+        $urls = $this->chainProvider->generateRoutes();
 
         if ('json' === $_format) {
             $response = $this->createJsonResponse($urls);

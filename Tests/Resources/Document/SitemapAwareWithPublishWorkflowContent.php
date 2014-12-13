@@ -7,6 +7,7 @@ use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCRODM;
+use Symfony\Cmf\Bundle\SeoBundle\ProspectiveSitemapElementInterface;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 
 /**
@@ -17,7 +18,8 @@ use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 class SitemapAwareWithPublishWorkflowContent extends ContentBase implements
     PublishableInterface,
     PublishTimePeriodInterface,
-    RouteReferrersReadInterface
+    RouteReferrersReadInterface,
+    ProspectiveSitemapElementInterface
 {
     /**
      * @var ArrayCollection|Route[]
