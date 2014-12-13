@@ -32,13 +32,17 @@ class SitemapUrlInformationProviderTest extends BaseTestCase
             'Symfony\Cmf\Bundle\SeoBundle\Tests\Resources\DataFixtures\Phpcr\LoadSitemapData',
         ));
 
-        $this->provider = new SitemapUrlInformationProvider($this->dm, $this->getContainer()->get('router'));
+        $this->provider = new SitemapUrlInformationProvider(
+            $this->dm,
+            $this->getContainer()->get('router'),
+            $this->getContainer()->get('cmf_core.publish_workflow.checker')
+        );
     }
 
     public function testRouteGeneration()
     {
         $routeInformation = $this->provider->generateRoutes();
 
-        $this->assertCount(1, $routeInformation);
+        $this->assertCount(2, $routeInformation);
     }
 }

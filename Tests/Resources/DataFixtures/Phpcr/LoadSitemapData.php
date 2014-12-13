@@ -20,6 +20,7 @@ use Symfony\Cmf\Bundle\SeoBundle\Tests\Resources\Document\AlternateLocaleContent
 use Symfony\Cmf\Bundle\SeoBundle\Tests\Resources\Document\SeoAwareContent;
 use Symfony\Cmf\Bundle\SeoBundle\Tests\Resources\Document\ContentWithExtractors;
 use Symfony\Cmf\Bundle\SeoBundle\Tests\Resources\Document\SitemapAwareContent;
+use Symfony\Cmf\Bundle\SeoBundle\Tests\Resources\Document\SitemapAwareWithPublishWorkflowContent;
 
 class LoadSitemapData implements FixtureInterface
 {
@@ -40,16 +41,43 @@ class LoadSitemapData implements FixtureInterface
             ->setName('sitemap-aware')
             ->setParentDocument($contentRoot)
             ->setBody('Content for that is sitemap aware');
-
         $manager->persist($sitemapAwareContent);
 
         $route = new Route();
         $route->setPosition($routeRoot, 'sitemap-aware');
         $route->setContent($sitemapAwareContent);
+        $manager->persist($route);
 
+        $nonPublishedContent = new SitemapAwareWithPublishWorkflowContent();
+        $nonPublishedContent->setIsVisibleForSitemap(true);
+        $nonPublishedContent->setPublishable(false);
+        $nonPublishedContent
+            ->setTitle('Sitemap Aware Content non publish')
+            ->setName('sitemap-aware-non-publish')
+            ->setParentDocument($contentRoot)
+            ->setBody('Content for that is sitemap aware, that is not publish');
+        $manager->persist($nonPublishedContent);
+
+        $route = new Route();
+        $route->setPosition($routeRoot, 'sitemap-aware-non-publish');
+        $route->setContent($nonPublishedContent);
+        $manager->persist($route);
+
+        $publishedContent = new SitemapAwareWithPublishWorkflowContent();
+        $publishedContent->setIsVisibleForSitemap(true);
+        $publishedContent->setPublishable(true);
+        $publishedContent
+            ->setTitle('Sitemap Aware Content publish')
+            ->setName('sitemap-aware-publish')
+            ->setParentDocument($contentRoot)
+            ->setBody('Content for that is sitemap aware, that is publish');
+        $manager->persist($publishedContent);
+
+        $route = new Route();
+        $route->setPosition($routeRoot, 'sitemap-aware-publish');
+        $route->setContent($publishedContent);
         $manager->persist($route);
 
         $manager->flush();
-
     }
 }

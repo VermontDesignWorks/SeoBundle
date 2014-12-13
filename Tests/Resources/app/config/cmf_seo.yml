@@ -23,3 +23,7 @@ cmf_routing:
 
 twig:
     exception_controller: cmf_seo.error.suggestion_provider.controller:showAction
+
+cmf_core:
+    multilang:
+        locales: [en, de]

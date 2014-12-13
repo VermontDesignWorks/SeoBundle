@@ -2,13 +2,11 @@
 
 namespace Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use PHPCR\Query\QueryInterface;
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Bundle\SeoBundle\Model\UrlInformation;
 use Symfony\Cmf\Bundle\SeoBundle\Sitemap\UrlInformationProviderInterface;
-use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
-use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -28,12 +26,23 @@ class SitemapUrlInformationProvider implements UrlInformationProviderInterface
     private $router;
 
     /**
-     * @param DocumentManager $manager
+     * @var PublishWorkflowChecker
      */
-    public function __construct(DocumentManager $manager, RouterInterface $router)
-    {
+    private $publishWorkflowChecker;
+
+    /**
+     * @param DocumentManager $manager
+     * @param RouterInterface $router
+     * @param PublishWorkflowChecker $publishWorkflowChecker
+     */
+    public function __construct(
+        DocumentManager $manager,
+        RouterInterface $router,
+        PublishWorkflowChecker $publishWorkflowChecker
+    ) {
         $this->manager = $manager ;
         $this->router = $router;
+        $this->publishWorkflowChecker = $publishWorkflowChecker;
     }
 
     /**
@@ -49,6 +58,9 @@ class SitemapUrlInformationProvider implements UrlInformationProviderInterface
         )->execute();
 
         foreach ($contentDocuments as $document) {
+            if (!$this->publishWorkflowChecker->isGranted(array(PublishWorkflowChecker::VIEW_ATTRIBUTE), $document)) {
+                continue;
+            }
             try {
                 $urlInformation = new UrlInformation();
                 $urlInformation->setLoc($this->router->generate($document, array(), true));
