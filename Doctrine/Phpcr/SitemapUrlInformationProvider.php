@@ -6,6 +6,7 @@ use Doctrine\ODM\PHPCR\DocumentManager;
 use PHPCR\Query\QueryInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Bundle\SeoBundle\AlternateLocaleProviderInterface;
+use Symfony\Cmf\Bundle\SeoBundle\Extractor\ExtractorInterface;
 use Symfony\Cmf\Bundle\SeoBundle\Model\UrlInformation;
 use Symfony\Cmf\Bundle\SeoBundle\Sitemap\UrlInformationProviderInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -21,6 +22,11 @@ class SitemapUrlInformationProvider implements UrlInformationProviderInterface
      * @var AlternateLocaleProviderInterface
      */
     protected $alternateLocaleProvider;
+
+    /**
+     * @var ExtractorInterface
+     */
+    protected $titleExtractor;
 
     /**
      * @var DocumentManager
@@ -101,6 +107,10 @@ class SitemapUrlInformationProvider implements UrlInformationProviderInterface
             $urlInformation->setAlternateLocales($collection->toArray());
         }
 
+        if (method_exists($content, 'getTitle')) {
+            $urlInformation->setLabel($content->getTitle());
+        }
+
         return $urlInformation;
     }
 
@@ -110,5 +120,10 @@ class SitemapUrlInformationProvider implements UrlInformationProviderInterface
     public function setAlternateLocaleProvider($alternateLocaleProvider)
     {
         $this->alternateLocaleProvider = $alternateLocaleProvider;
+    }
+
+    public function setTitleExtractor(ExtractorInterface $titleExtractor)
+    {
+        $this->titleExtractor = $titleExtractor;
     }
 }

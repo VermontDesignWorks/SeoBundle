@@ -8,12 +8,18 @@ use Symfony\Cmf\Bundle\SeoBundle\Model\UrlInformation;
 use Symfony\Cmf\Bundle\SeoBundle\Sitemap\ChainProvider;
 use Symfony\Cmf\Bundle\SeoBundle\Sitemap\UrlInformationProviderInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Templating\EngineInterface;
 
 /**
  * @author Maximilian Berghoff <Maximilian.Berghoff@gmx.de>
  */
 class SitemapControllerTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var EngineInterface
+     */
+    protected $templating;
+
     /**
      * @var UrlInformationProviderInterface
      */
@@ -31,7 +37,8 @@ class SitemapControllerTest extends \PHPUnit_Framework_TestCase
         $chain->addProvider($this->provider);
         $this->createRoutes();
 
-        $this->controller = new SitemapController($chain);
+        $this->templating = $this->getMock('Symfony\Component\Templating\EngineInterface');
+        $this->controller = new SitemapController($chain, $this->templating);
     }
 
     public function testRequestJson()
@@ -64,44 +71,24 @@ class SitemapControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testRequestXml()
     {
-        // preparing stuff
-        $container = $this->getMock('\Symfony\Component\DependencyInjection\ContainerInterface');
-        $this->controller->setContainer($container);
-        $templating = $this->getMock('EngineInterface', array('render'));
-        $container
-            ->expects($this->any())
-            ->method('get')
-            ->with($this->equalTo('templating'))
-            ->will($this->returnValue($templating))
-        ;
         $response = new Response('some-xml-string');
-        $templating->expects($this->once())->method('render')->will($this->returnValue($response));
+        $this->templating->expects($this->once())->method('render')->will($this->returnValue($response));
 
         /** @var Response $response */
         $response = $this->controller->indexAction('xml');
 
-        $this->assertEquals('some-xml-string', $response->getContent());
+        $this->assertEquals(new Response('some-xml-string'), $response->getContent());
     }
 
     public function testRequestHtml()
     {
-        // preparing stuff
-        $container = $this->getMock('\Symfony\Component\DependencyInjection\ContainerInterface');
-        $this->controller->setContainer($container);
-        $templating = $this->getMock('EngineInterface', array('render'));
-        $container
-            ->expects($this->any())
-            ->method('get')
-            ->with($this->equalTo('templating'))
-            ->will($this->returnValue($templating))
-        ;
         $response = new Response('some-html-string');
-        $templating->expects($this->once())->method('render')->will($this->returnValue($response));
+        $this->templating->expects($this->once())->method('render')->will($this->returnValue($response));
 
         /** @var Response $response */
         $response = $this->controller->indexAction('html');
 
-        $this->assertEquals('some-html-string', $response->getContent());
+        $this->assertEquals(new Response('some-html-string'), $response->getContent());
     }
 
     private function createRoutes()

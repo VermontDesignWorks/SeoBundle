@@ -56,7 +56,7 @@ class CmfSeoExtensionTest extends AbstractExtensionTestCase
 
         $this->assertContainerBuilderHasService(
             'cmf_seo.sitemap.phpcr_provider',
-            'Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr\SitemapRouteGenerator'
+            'Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr\SitemapUrlInformationProvider'
         );
     }
 
@@ -229,7 +229,7 @@ class CmfSeoExtensionTest extends AbstractExtensionTestCase
 
         $this->assertContainerBuilderHasService(
             'cmf_seo.sitemap.controller',
-            'Symfony\Cmf\Bundle\SeoBundle\Sitemap\SitemapController'
+            'Symfony\Cmf\Bundle\SeoBundle\Controller\SitemapController'
         );
         $this->assertContainerBuilderHasService(
             'cmf_seo.sitemap.chain_provider',
@@ -237,7 +237,7 @@ class CmfSeoExtensionTest extends AbstractExtensionTestCase
         );
         $this->assertContainerBuilderHasService(
             'cmf_seo.sitemap.phpcr_provider',
-            'Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr\SitemapRouteGenerator'
+            'Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr\SitemapUrlInformationProvider'
         );
         $this->assertContainerBuilderHasServiceDefinitionWithTag(
             'cmf_seo.sitemap.phpcr_provider',

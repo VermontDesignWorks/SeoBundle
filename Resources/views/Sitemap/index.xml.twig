@@ -5,9 +5,11 @@
             <loc>{{ url.loc }}</loc>
             <lastmod>{{ url.lastmod }}</lastmod>
             <changefreq>{{ url.changeFreq }}</changefreq>
-            {% for locale in alternateLocales %}
-                <xhtml:link rel="alternate" hreflang="{{ locale.hrefLocale }}" href="{{ locale.href }}"/>
-            {% endfor %}
+            {% if alternateLoace is defined %}
+                {% for locale in alternateLocales %}
+                    <xhtml:link rel="alternate" hreflang="{{ locale.hrefLocale }}" href="{{ locale.href }}"/>
+                {% endfor %}
+            {% endif %}
         </url>
     {% endfor %}
 </urlset>
