@@ -26,6 +26,8 @@ class SitemapUrlInformationProviderTest extends BaseTestCase
 
     protected $alternateLocaleProvider;
 
+    protected $logger;
+
     public function setUp()
     {
         $this->db('PHPCR')->createTestNode();
@@ -36,11 +38,14 @@ class SitemapUrlInformationProviderTest extends BaseTestCase
             'Symfony\Cmf\Bundle\SeoBundle\Tests\Resources\DataFixtures\Phpcr\LoadSitemapData',
         ));
 
+        $this->logger = $this->getMock('Psr\Log\LoggerInterface');
+
         $this->provider = new SitemapUrlInformationProvider(
             $this->dm,
             $this->getContainer()->get('router'),
             $this->getContainer()->get('cmf_core.publish_workflow.checker'),
-            'always'
+            'always',
+            $this->logger
         );
         $this->alternateLocaleProvider = $this->getMock('\Symfony\Cmf\Bundle\SeoBundle\AlternateLocaleProviderInterface');
         $this->provider->setAlternateLocaleProvider($this->alternateLocaleProvider);

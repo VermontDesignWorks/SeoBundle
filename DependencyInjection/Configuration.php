@@ -60,7 +60,7 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->beforeNormalization()
                         ->ifTrue( function ($v) { return is_scalar($v); })
-                        ->then( function ($v) {
+                        ->then(function ($v) {
                             return array('enabled' => $v);
                         })
                     ->end()
@@ -87,17 +87,8 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('sitemap')
                     ->addDefaultsIfNotSet()
-                    ->beforeNormalization()
-                        ->ifTrue(function ($v) { return is_scalar($v); })
-                        ->then( function ($v) {
-                            return array('enabled' => $v);
-                        })
-                        ->end()
+                    ->canBeEnabled()
                     ->children()
-                        ->enumNode('enabled')
-                            ->values(array(true, false, 'auto'))
-                            ->defaultValue('auto')
-                        ->end()
                         ->scalarNode('default_chan_frequency')->defaultValue('always')->end()
                     ->end()
                 ->end()

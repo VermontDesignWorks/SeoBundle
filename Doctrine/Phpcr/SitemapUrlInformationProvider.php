@@ -12,13 +12,16 @@
 namespace Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr;
 
 use Doctrine\ODM\PHPCR\DocumentManager;
+use Jackalope\Transport\Logging\LoggerInterface;
 use PHPCR\Query\QueryInterface;
+use Psr\Log\LoggerInterface as PsrLogger;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Bundle\SeoBundle\AlternateLocaleProviderInterface;
 use Symfony\Cmf\Bundle\SeoBundle\Extractor\ExtractorInterface;
 use Symfony\Cmf\Bundle\SeoBundle\Model\UrlInformation;
 use Symfony\Cmf\Bundle\SeoBundle\Sitemap\UrlInformationProviderInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * The PHPCR implementation of the sitemap route generator.
@@ -47,30 +50,37 @@ class SitemapUrlInformationProvider implements UrlInformationProviderInterface
     private $router;
 
     /**
-     * @var PublishWorkflowChecker
+     * @var SecurityContextInterface
      */
     private $publishWorkflowChecker;
     /**
      * @var string
      */
     private $defaultChanFrequency;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
-     * @param DocumentManager        $manager
-     * @param RouterInterface        $router
-     * @param PublishWorkflowChecker $publishWorkflowChecker
-     * @param string                 $defaultChanFrequency
+     * @param DocumentManager $manager
+     * @param RouterInterface $router
+     * @param SecurityContextInterface $publishWorkflowChecker
+     * @param string $defaultChanFrequency
+     * @param PsrLogger $logger
      */
     public function __construct(
         DocumentManager $manager,
         RouterInterface $router,
-        PublishWorkflowChecker $publishWorkflowChecker,
-        $defaultChanFrequency
+        SecurityContextInterface $publishWorkflowChecker,
+        $defaultChanFrequency,
+        PsrLogger $logger
     ) {
         $this->manager = $manager ;
         $this->router = $router;
         $this->publishWorkflowChecker = $publishWorkflowChecker;
         $this->defaultChanFrequency = $defaultChanFrequency;
+        $this->logger = $logger;
     }
 
     /**
@@ -93,7 +103,7 @@ class SitemapUrlInformationProvider implements UrlInformationProviderInterface
             try {
                 $routeInformation[] = $this->computeUrlInformationFromContent($document);
             } catch (\Exception $e) {
-
+                $this->logger->info($e->getMessage());
             }
         }
 
@@ -101,6 +111,9 @@ class SitemapUrlInformationProvider implements UrlInformationProviderInterface
     }
 
     /**
+     * To generate the url information object out of the content this method
+     * extracts the data from the given content.
+     *
      * @param $content
      *
      * @return UrlInformation

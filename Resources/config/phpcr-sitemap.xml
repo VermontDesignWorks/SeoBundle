@@ -14,7 +14,8 @@
             <argument type="service" id="doctrine_phpcr.odm.default_document_manager"/>
             <argument type="service" id="router" />
             <argument type="service" id="cmf_core.publish_workflow.checker" />
-            <argument>%cmf_seo.sitemap.default_chan_frequency%</argument>
+            <argument>%cmf_seo.sitemap.default_change_frequency%</argument>
+            <argument type="service" id="logger" />
 
             <tag name="cmf_seo.sitemap.url_information_provider" />
         </service>

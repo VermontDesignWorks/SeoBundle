@@ -12,7 +12,6 @@
 namespace Symfony\Cmf\Bundle\SeoBundle\Controller;
 
 use Symfony\Cmf\Bundle\SeoBundle\Model\UrlInformation;
-use Symfony\Cmf\Bundle\SeoBundle\Sitemap\ChainProvider;
 use Symfony\Cmf\Bundle\SeoBundle\Sitemap\UrlInformationProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

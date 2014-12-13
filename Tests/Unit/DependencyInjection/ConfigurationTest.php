@@ -61,7 +61,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                 'provider_id' => null,
             ),
             'sitemap' => array(
-                'enabled' => 'auto',
+                'enabled' => false,
                 'default_chan_frequency' => 'always'
             ),
             );

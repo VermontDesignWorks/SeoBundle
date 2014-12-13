@@ -90,7 +90,7 @@ class CmfSeoExtension extends Extension
         $this->loadErrorHandling($errorConfig, $container);
 
         if ($this->isConfigEnabled($container, $config['sitemap'])) {
-            $this->laodSitemapHandling($config['sitemap'], $loader, $container);
+            $this->loadSitemapHandling($config['sitemap'], $loader, $container);
         }
     }
 
@@ -231,14 +231,14 @@ class CmfSeoExtension extends Extension
         }
     }
 
-    private function laodSitemapHandling($config, XmlFileLoader $loader, ContainerBuilder $container)
+    private function loadSitemapHandling($config, XmlFileLoader $loader, ContainerBuilder $container)
     {
         if ($config['enabled']) {
             $loader->load('sitemap.xml');
         }
 
         $container->setParameter(
-            $this->getAlias().'.sitemap.default_chan_frequency',
+            $this->getAlias().'.sitemap.default_change_frequency',
             $config['default_chan_frequency']
         );
     }
