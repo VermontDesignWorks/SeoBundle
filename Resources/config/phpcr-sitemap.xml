@@ -14,6 +14,8 @@
             <argument type="service" id="doctrine_phpcr.odm.default_document_manager"/>
             <argument type="service" id="router" />
             <argument type="service" id="cmf_core.publish_workflow.checker" />
+
+            <tag name="cmf_seo.sitemap.url_information_provider" />
         </service>
     </services>
 </container>

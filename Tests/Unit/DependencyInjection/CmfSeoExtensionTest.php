@@ -224,10 +224,9 @@ class CmfSeoExtensionTest extends AbstractExtensionTestCase
             'cmf_seo.sitemap.phpcr_provider',
             'Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr\SitemapRouteGenerator'
         );
-        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
-            'cmf_seo.sitemap.chain_provider',
-            'addProvider',
-            array($this->container->getDefinition('cmf_seo.sitemap.phpcr_provider'))
+        $this->assertContainerBuilderHasServiceDefinitionWithTag(
+            'cmf_seo.sitemap.phpcr_provider',
+            'cmf_seo.sitemap.url_information_provider'
         );
     }
 }

@@ -227,14 +227,5 @@ class CmfSeoExtension extends Extension
         if ($config['enabled']) {
             $loader->load('sitemap.xml');
         }
-
-        if ($container->has('cmf_seo.sitemap.phpcr_provider')) {
-            $chainDefinition = $container->getDefinition('cmf_seo.sitemap.chain_provider');
-            $chainDefinition
-                ->addMethodCall(
-                    'addProvider',
-                    array($container->getDefinition('cmf_seo.sitemap.phpcr_provider'))
-                );
-        }
     }
 }
