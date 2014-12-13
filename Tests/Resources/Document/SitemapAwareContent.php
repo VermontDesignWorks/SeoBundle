@@ -2,7 +2,7 @@
 
 namespace Symfony\Cmf\Bundle\SeoBundle\Tests\Resources\Document;
 
-use Symfony\Cmf\Bundle\SeoBundle\Model\UrlInformation;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCRODM;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 use Symfony\Component\Routing\Route;
@@ -14,7 +14,15 @@ use Symfony\Component\Routing\Route;
  */
 class SitemapAwareContent extends ContentBase implements RouteReferrersReadInterface
 {
-    private $routes = array();
+    /**
+     * @var ArrayCollection|Route[]
+     *
+     * @PHPCRODM\Referrers(
+     *  referringDocument="Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route",
+     *  referencedBy="content"
+     * )
+     */
+    protected $routes;
 
     /**
      * @var bool
@@ -23,6 +31,10 @@ class SitemapAwareContent extends ContentBase implements RouteReferrersReadInter
      */
     private $isVisibleForSitemap;
 
+    public function __construct()
+    {
+        $this->routes = new ArrayCollection();
+    }
 
     /**
      * @return boolean
@@ -42,6 +54,26 @@ class SitemapAwareContent extends ContentBase implements RouteReferrersReadInter
         $this->isVisibleForSitemap = $isVisibleForSitemap;
 
         return $this;
+    }
+
+    /**
+     * Add a route to the collection.
+     *
+     * @param Route $route
+     */
+    public function addRoute($route)
+    {
+        $this->routes->add($route);
+    }
+
+    /**
+     * Remove a route from the collection.
+     *
+     * @param Route $route
+     */
+    public function removeRoute($route)
+    {
+        $this->routes->removeElement($route);
     }
 
     /**

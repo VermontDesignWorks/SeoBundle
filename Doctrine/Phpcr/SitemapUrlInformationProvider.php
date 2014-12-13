@@ -51,13 +51,14 @@ class SitemapUrlInformationProvider implements UrlInformationProviderInterface
         foreach ($contentDocuments as $document) {
             try {
                 $urlInformation = new UrlInformation();
-                $urlInformation->setLoc($this->router->generate($document, true));
+                $urlInformation->setLoc($this->router->generate($document, array(), true));
 
                 $routeInformation[] = $urlInformation;
             } catch (\Exception $e) {
 
             }
         }
-        return array();
+
+        return $routeInformation;
     }
 }

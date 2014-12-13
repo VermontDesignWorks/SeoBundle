@@ -52,6 +52,7 @@ class AlternateLocaleContent extends ContentBase implements
     {
         $this->routes = new ArrayCollection();
     }
+
     /**
      * Add a route to the collection.
      *
