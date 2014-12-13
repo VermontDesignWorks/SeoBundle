@@ -82,13 +82,13 @@ class SitemapControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testRequestHtml()
     {
-        $response = new Response('some-html-string');
-        $this->templating->expects($this->once())->method('render')->will($this->returnValue($response));
+        $expectedResponse = new Response('some-html-string');
+        $this->templating->expects($this->once())->method('render')->will($this->returnValue($expectedResponse));
 
         /** @var Response $response */
         $response = $this->controller->indexAction('html');
 
-        $this->assertEquals(new Response('some-html-string'), $response->getContent());
+        $this->assertEquals($expectedResponse, $response->getContent());
     }
 
     private function createRoutes()

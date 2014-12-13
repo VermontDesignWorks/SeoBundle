@@ -5,8 +5,8 @@
             <loc>{{ url.loc }}</loc>
             <lastmod>{{ url.lastmod }}</lastmod>
             <changefreq>{{ url.changeFreq }}</changefreq>
-            {% if alternateLoace is defined %}
-                {% for locale in alternateLocales %}
+            {% if url.alternateLocales is defined and url.alternateLocales|length > 0 %}
+                {% for locale in url.alternateLocales %}
                     <xhtml:link rel="alternate" hreflang="{{ locale.hrefLocale }}" href="{{ locale.href }}"/>
                 {% endfor %}
             {% endif %}

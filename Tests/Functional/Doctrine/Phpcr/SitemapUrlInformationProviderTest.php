@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\SeoBundle\Tests\Functional\Sitemap;
+namespace Symfony\Cmf\Bundle\SeoBundle\Tests\Functional\Doctrine\Phpcr;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\PHPCR\DocumentManager;

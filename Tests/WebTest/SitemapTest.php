@@ -65,6 +65,7 @@ class SitemapTest extends BaseTestCase
                             <loc>http://localhost/sitemap-aware</loc>
                             <lastmod/>
                             <changefreq>always</changefreq>
+                            <xhtml:link href="http://localhost/sitemap-aware?_locale=de" hreflang="de" rel="alternate"/>
                           </url>
                           <url>
                             <loc>http://localhost/sitemap-aware-publish</loc>
