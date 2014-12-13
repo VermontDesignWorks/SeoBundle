@@ -39,7 +39,7 @@ class RegisterUrlInformationProviderPass implements CompilerPassInterface
         foreach ($taggedServices as $id => $attributes) {
             $definition = $container->getDefinition($id);
             if (!$definition->isPublic()) {
-                throw new LogicException(sprintf('Matcher "%s" must be public.', $id));
+                throw new LogicException(sprintf('Provider "%s" must be public.', $id));
             }
 
             $chainProviderDefinition->addMethodCall('addProvider', array(new Reference($id)));

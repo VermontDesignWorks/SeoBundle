@@ -146,22 +146,6 @@ class LoadContentData implements FixtureInterface
 
         $manager->persist($route);
 
-        $sitemapAwareContent = new SitemapAwareContent();
-        $sitemapAwareContent
-            ->setIsVisibleForSitemap(true)
-            ->setTitle('Sitemap Aware Content')
-            ->setName('sitemap-aware')
-            ->setParentDocument($contentRoot)
-            ->setBody('Content for that is sitemap aware');
-
-        $manager->persist($sitemapAwareContent);
-
-        $route = new Route();
-        $route->setPosition($routeRoot, 'sitemap-aware');
-        $route->setContent($sitemapAwareContent);
-
-        $manager->persist($route);
-
         $manager->flush();
 
     }
