@@ -4,16 +4,26 @@ namespace Symfony\Cmf\Bundle\SeoBundle\Tests\Resources\Document;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCRODM;
+use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 use Symfony\Component\Routing\Route;
 
 /**
- * @PHPCRODM\Document(referenceable=true)
+ * @PHPCRODM\Document(referenceable=true, translator="attribute")
  *
  * @author Maximilian Berghoff <Maximilian.Berghoff@gmx.de>
  */
-class SitemapAwareContent extends ContentBase implements RouteReferrersReadInterface
+class SitemapAwareContent extends ContentBase implements
+    RouteReferrersReadInterface,
+    TranslatableInterface
 {
+    /**
+     * @var string
+     *
+     * @PHPCRODM\Locale
+     */
+    protected $locale;
+
     /**
      * @var ArrayCollection|Route[]
      *
@@ -30,6 +40,13 @@ class SitemapAwareContent extends ContentBase implements RouteReferrersReadInter
      * @PHPCRODM\Boolean(property="visible")
      */
     private $isVisibleForSitemap;
+
+    /**
+     * @var string
+     *
+     * @PHPCRODM\String(translated=true)
+     */
+    protected $title;
 
     public function __construct()
     {
@@ -84,5 +101,24 @@ class SitemapAwareContent extends ContentBase implements RouteReferrersReadInter
     public function getRoutes()
     {
         return $this->routes;
+    }
+
+
+    /**
+     * @return string|boolean The locale of this model or false if
+     *                        translations are disabled in this project.
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @param string|boolean $locale The local for this model, or false if
+     *                               translations are disabled in this project.
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
     }
 }

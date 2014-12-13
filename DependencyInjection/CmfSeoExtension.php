@@ -201,6 +201,15 @@ class CmfSeoExtension extends Extension
                     array($container->getDefinition($alternateLocaleProvider))
                 )
             ;
+
+            if ($container->has('cmf_seo.sitemap.phpcr_provider')) {
+                $definition = $container->getDefinition('cmf_seo.sitemap.phpcr_provider');
+                $definition
+                    ->addMethodCall(
+                        'setAlternateLocaleProvider',
+                        array($container->getDefinition($alternateLocaleProvider))
+                    );
+            }
         }
     }
 
@@ -227,5 +236,10 @@ class CmfSeoExtension extends Extension
         if ($config['enabled']) {
             $loader->load('sitemap.xml');
         }
+
+        $container->setParameter(
+            $this->getAlias().'.sitemap.default_chan_frequency',
+            $config['default_chan_frequency']
+        );
     }
 }

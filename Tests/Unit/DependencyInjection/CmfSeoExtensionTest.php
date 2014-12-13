@@ -135,15 +135,28 @@ class CmfSeoExtensionTest extends AbstractExtensionTestCase
 
     public function testAlternateLocaleWithCustomProvider()
     {
+        $this->container->setParameter(
+            'kernel.bundles',
+            array()
+        );
         $this->container->setDefinition('some_alternate_locale_provider', new Definition());
         $this->load(array(
+            'persistence' => array(
+                'phpcr' => true,
+            ),
             'alternate_locale' => array(
                 'provider_id' => 'some_alternate_locale_provider'
             ),
+            'sitemap' => true,
         ));
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'cmf_seo.event_listener.seo_content',
+            'setAlternateLocaleProvider',
+            array($this->container->getDefinition('some_alternate_locale_provider'))
+        );
+        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+            'cmf_seo.sitemap.phpcr_provider',
             'setAlternateLocaleProvider',
             array($this->container->getDefinition('some_alternate_locale_provider'))
         );
@@ -206,7 +219,9 @@ class CmfSeoExtensionTest extends AbstractExtensionTestCase
             array()
         );
         $this->load(array(
-            'sitemap'   => true,
+            'sitemap'   => array(
+                'default_chan_frequency' => 'never',
+            ),
             'persistence'   => array(
                 'phpcr' => true,
             ),

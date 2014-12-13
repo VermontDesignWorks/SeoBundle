@@ -2,8 +2,10 @@
 
 namespace Symfony\Cmf\Bundle\SeoBundle\Tests\Functional\Sitemap;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr\SitemapUrlInformationProvider;
+use Symfony\Cmf\Bundle\SeoBundle\Model\AlternateLocale;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
 /**
@@ -22,6 +24,8 @@ class SitemapUrlInformationProviderTest extends BaseTestCase
      */
     protected $provider;
 
+    protected $alternateLocaleProvider;
+
     public function setUp()
     {
         $this->db('PHPCR')->createTestNode();
@@ -35,8 +39,17 @@ class SitemapUrlInformationProviderTest extends BaseTestCase
         $this->provider = new SitemapUrlInformationProvider(
             $this->dm,
             $this->getContainer()->get('router'),
-            $this->getContainer()->get('cmf_core.publish_workflow.checker')
+            $this->getContainer()->get('cmf_core.publish_workflow.checker'),
+            'always'
         );
+        $this->alternateLocaleProvider = $this->getMock('\Symfony\Cmf\Bundle\SeoBundle\AlternateLocaleProviderInterface');
+        $this->provider->setAlternateLocaleProvider($this->alternateLocaleProvider);
+
+        $alternateLocale = new AlternateLocale('test', 'de');
+        $this->alternateLocaleProvider
+            ->expects($this->any())
+            ->method('createForContent')
+            ->will($this->returnValue(new ArrayCollection(array($alternateLocale))));
     }
 
     public function testRouteGeneration()

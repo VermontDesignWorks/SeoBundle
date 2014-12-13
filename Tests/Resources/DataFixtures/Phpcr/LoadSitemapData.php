@@ -42,6 +42,11 @@ class LoadSitemapData implements FixtureInterface
             ->setParentDocument($contentRoot)
             ->setBody('Content for that is sitemap aware');
         $manager->persist($sitemapAwareContent);
+        $manager->bindTranslation($sitemapAwareContent, 'en');
+        $sitemapAwareContent
+            ->setTitle('Content für die Sitemap')
+            ->setBody('Das sollte die Deutsche Version des Contents sein.');
+        $manager->bindTranslation($sitemapAwareContent, 'de');
 
         $route = new Route();
         $route->setPosition($routeRoot, 'sitemap-aware');

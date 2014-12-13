@@ -2,6 +2,7 @@ cmf_seo:
     persistence: { phpcr: true }
     alternate_locale: ~
     sonata_admin_extension: true
+    sitemap: true
 
 cmf_routing:
     dynamic:

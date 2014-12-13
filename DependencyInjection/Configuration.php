@@ -98,6 +98,7 @@ class Configuration implements ConfigurationInterface
                             ->values(array(true, false, 'auto'))
                             ->defaultValue('auto')
                         ->end()
+                        ->scalarNode('default_chan_frequency')->defaultValue('always')->end()
                     ->end()
                 ->end()
             ->end()
