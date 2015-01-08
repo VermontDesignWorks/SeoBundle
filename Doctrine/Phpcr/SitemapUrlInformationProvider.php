@@ -91,7 +91,7 @@ class SitemapUrlInformationProvider implements UrlInformationProviderInterface
         $routeInformation = array();
 
         $contentDocuments = $this->manager->createQuery(
-            "SELECT * FROM [nt:unstructured] WHERE (visible = true)",
+            "SELECT * FROM [nt:unstructured] WHERE (visible_for_sitemap = true)",
             QueryInterface::JCR_SQL2
         )->execute();
 

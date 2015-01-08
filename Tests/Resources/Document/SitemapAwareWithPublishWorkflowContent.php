@@ -7,7 +7,7 @@ use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCRODM;
-use Symfony\Cmf\Bundle\SeoBundle\ProspectiveSitemapElementInterface;
+use Symfony\Cmf\Bundle\SeoBundle\SitemapElementInterface;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 
 /**
@@ -19,7 +19,7 @@ class SitemapAwareWithPublishWorkflowContent extends ContentBase implements
     PublishableInterface,
     PublishTimePeriodInterface,
     RouteReferrersReadInterface,
-    ProspectiveSitemapElementInterface
+    SitemapElementInterface
 {
     /**
      * @var ArrayCollection|Route[]
@@ -34,7 +34,7 @@ class SitemapAwareWithPublishWorkflowContent extends ContentBase implements
     /**
      * @var bool
      *
-     * @PHPCRODM\Boolean(property="visible")
+     * @PHPCRODM\Boolean(property="visible_for_sitemap")
      */
     private $isVisibleForSitemap;
 
