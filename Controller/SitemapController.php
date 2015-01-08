@@ -13,6 +13,7 @@ namespace Symfony\Cmf\Bundle\SeoBundle\Controller;
 
 use Symfony\Cmf\Bundle\SeoBundle\Model\UrlInformation;
 use Symfony\Cmf\Bundle\SeoBundle\Sitemap\UrlInformationProviderInterface;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Templating\EngineInterface;
@@ -47,15 +48,18 @@ class SitemapController
      * @param EngineInterface $templating
      * @param array $templates
      */
-    public function __construct(UrlInformationProviderInterface $provider, EngineInterface $templating, array $templates)
-    {
+    public function __construct(
+        UrlInformationProviderInterface $provider,
+        EngineInterface $templating,
+        array $templates
+    ) {
         $this->chainProvider = $provider;
         $this->templating = $templating;
         $this->templates = $templates;
     }
 
     /**
-     * @param $_format
+     * @param string $_format The format of the sitemap. Supported values are html|xml|json
      *
      * @return Response
      */
@@ -73,9 +77,9 @@ class SitemapController
         if (null === $response) {
             $supportedFormats = array_keys($this->templates);
             $supportedFormats[] = 'json';
-            throw new \InvalidArgumentException(
+            throw new InvalidConfigurationException(
                 sprintf(
-                    'Unsupported type %s for sitemap creation. Use one of %s',
+                    'Type %s is not configures for sitemaps, use one of %s',
                     $_format,
                     implode(', ', $supportedFormats)
                 )

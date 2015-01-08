@@ -16,7 +16,7 @@
             <argument type="service" id="templating" />
             <argument type="collection">
                 <argument key="xml">CmfSeoBundle:Sitemap:index.xml.twig</argument>
-                <argument key="htmlK">CmfSeoBundle:Sitemap:index.html.twig</argument>
+                <argument key="html">CmfSeoBundle:Sitemap:index.html.twig</argument>
             </argument>
         </service>
         <service id="cmf_seo.sitemap.chain_provider" class="%cmf_seo.sitemap.chain_provider.class%" />
