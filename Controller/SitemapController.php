@@ -24,10 +24,6 @@ use Symfony\Component\Templating\EngineInterface;
  */
 class SitemapController
 {
-    const TEMPLATE_HTML = 'CmfSeoBundle:Sitemap:index.html.twig';
-
-    const TEMPLATE_XML = 'CmfSeoBundle:Sitemap:index.xml.twig';
-
     /**
      * @var UrlInformationProviderInterface
 */
@@ -38,13 +34,24 @@ class SitemapController
     private $templating;
 
     /**
+     * @var array
+     */
+    private $templates;
+
+    /**
+     * Inject the templates as an hashmap like:
+     *
+     * array('format' => 'Bundle:Domain:template.format.twig')
+     *
      * @param UrlInformationProviderInterface $provider
      * @param EngineInterface $templating
+     * @param array $templates
      */
-    public function __construct(UrlInformationProviderInterface $provider, EngineInterface $templating)
+    public function __construct(UrlInformationProviderInterface $provider, EngineInterface $templating, array $templates)
     {
         $this->chainProvider = $provider;
         $this->templating = $templating;
+        $this->templates = $templates;
     }
 
     /**
@@ -59,17 +66,18 @@ class SitemapController
 
         if ('json' === $_format) {
             $response = $this->createJsonResponse($urls);
-        } elseif ('xml' === $_format || 'html' === $_format) {
-            $template = 'xml' === $_format ? self::TEMPLATE_XML : self::TEMPLATE_HTML;
-            $response =  new Response($this->templating->render($template, array('urls' => $urls)));
+        } elseif (isset($this->templates[$_format])) {
+            $response =  new Response($this->templating->render($this->templates[$_format], array('urls' => $urls)));
         }
 
         if (null === $response) {
+            $supportedFormats = array_keys($this->templates);
+            $supportedFormats[] = 'json';
             throw new \InvalidArgumentException(
                 sprintf(
                     'Unsupported type %s for sitemap creation. Use one of %s',
                     $_format,
-                    implode(', ', array('xml', 'json', 'html'))
+                    implode(', ', $supportedFormats)
                 )
             );
         }

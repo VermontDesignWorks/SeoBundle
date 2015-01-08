@@ -36,7 +36,14 @@ class SitemapControllerTest extends \PHPUnit_Framework_TestCase
         $this->createRoutes();
 
         $this->templating = $this->getMock('Symfony\Component\Templating\EngineInterface');
-        $this->controller = new SitemapController($this->provider, $this->templating);
+        $this->controller = new SitemapController(
+            $this->provider,
+            $this->templating,
+            array(
+                'xml'  => 'CmfSeoBundle:Sitemap:index.xml.twig',
+                'html' => 'CmfSeoBundle:Sitemap:index.html.twig',
+            )
+        );
     }
 
     public function testRequestJson()
