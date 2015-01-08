@@ -58,7 +58,7 @@ class SitemapAwareContent extends ContentBase implements
     /**
      * @return boolean
      */
-    public function isIsVisibleForSitemap()
+    public function isVisibleInSitemap()
     {
         return $this->isVisibleForSitemap;
     }

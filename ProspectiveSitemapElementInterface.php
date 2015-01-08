@@ -13,5 +13,5 @@ interface ProspectiveSitemapElementInterface
      *
      * @return bool
      */
-    public function isIsVisibleForSitemap();
+    public function isVisibleInSitemap();
 }
