@@ -19,7 +19,9 @@ use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Bundle\SeoBundle\AlternateLocaleProviderInterface;
 use Symfony\Cmf\Bundle\SeoBundle\Extractor\ExtractorInterface;
 use Symfony\Cmf\Bundle\SeoBundle\Model\UrlInformation;
+use Symfony\Cmf\Bundle\SeoBundle\SeoPresentationInterface;
 use Symfony\Cmf\Bundle\SeoBundle\Sitemap\UrlInformationProviderInterface;
+use Symfony\Cmf\Bundle\SeoBundle\Tests\Resources\Document\SeoAwareContent;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -61,6 +63,10 @@ class SitemapUrlInformationProvider implements UrlInformationProviderInterface
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var SeoPresentationInterface
+     */
+    private $seoPresentation;
 
     /**
      * @param DocumentManager $manager
@@ -68,19 +74,22 @@ class SitemapUrlInformationProvider implements UrlInformationProviderInterface
      * @param SecurityContextInterface $publishWorkflowChecker
      * @param string $defaultChanFrequency
      * @param PsrLogger $logger
+     * @param SeoPresentationInterface $seoPresentation
      */
     public function __construct(
         DocumentManager $manager,
         RouterInterface $router,
         SecurityContextInterface $publishWorkflowChecker,
         $defaultChanFrequency,
-        PsrLogger $logger
+        PsrLogger $logger,
+        SeoPresentationInterface $seoPresentation
     ) {
         $this->manager = $manager ;
         $this->router = $router;
         $this->publishWorkflowChecker = $publishWorkflowChecker;
         $this->defaultChanFrequency = $defaultChanFrequency;
         $this->logger = $logger;
+        $this->seoPresentation = $seoPresentation;
     }
 
     /**
@@ -129,8 +138,9 @@ class SitemapUrlInformationProvider implements UrlInformationProviderInterface
             $urlInformation->setAlternateLocales($collection->toArray());
         }
 
-        if (method_exists($content, 'getTitle')) {
-            $urlInformation->setLabel($content->getTitle());
+        $seoMetadata = $this->seoPresentation->getSeoMetadata($content);
+        if (null !== $seoMetadata->getTitle()) {
+            $urlInformation->setLabel($seoMetadata->getTitle());
         }
 
         return $urlInformation;

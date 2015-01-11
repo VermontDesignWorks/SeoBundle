@@ -28,7 +28,7 @@ class SitemapController
     /**
      * @var UrlInformationProviderInterface
 */
-    private $chainProvider;
+    private $urlProvider;
     /**
      * @var EngineInterface
      */
@@ -42,7 +42,9 @@ class SitemapController
     /**
      * Inject the templates as an hashmap like:
      *
-     * array('format' => 'Bundle:Domain:template.format.twig')
+     * array('<format>' => 'Bundle:Domain:template.format.twig')
+     *
+     * Valid formats are html, json and xml.
      *
      * @param UrlInformationProviderInterface $provider
      * @param EngineInterface $templating
@@ -53,7 +55,7 @@ class SitemapController
         EngineInterface $templating,
         array $templates
     ) {
-        $this->chainProvider = $provider;
+        $this->urlProvider = $provider;
         $this->templating = $templating;
         $this->templates = $templates;
     }
@@ -66,12 +68,11 @@ class SitemapController
     public function indexAction($_format)
     {
         $response = null;
-        $urls = $this->chainProvider->generateRoutes();
-
-        if ('json' === $_format) {
-            $response = $this->createJsonResponse($urls);
-        } elseif (isset($this->templates[$_format])) {
+        $urls = $this->urlProvider->generateRoutes();
+        if (isset($this->templates[$_format])) {
             $response =  new Response($this->templating->render($this->templates[$_format], array('urls' => $urls)));
+        } elseif ('json' === $_format) {
+            $response = $this->createJsonResponse($urls);
         }
 
         if (null === $response) {

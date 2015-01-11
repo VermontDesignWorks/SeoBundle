@@ -13,6 +13,7 @@ namespace Symfony\Cmf\Bundle\SeoBundle;
 
 use Symfony\Cmf\Bundle\SeoBundle\Model\AlternateLocaleCollection;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Cmf\Bundle\SeoBundle\Model\SeoMetadata;
 
 /**
  * A SEO presentation takes a content and updates the Sonata SeoPage
@@ -22,6 +23,16 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 interface SeoPresentationInterface
 {
+    /**
+     * Gets the SeoMetadata based on the content that contains the content.
+     *
+     * @param object $content
+     *
+     * @throws Exception\InvalidArgumentException
+     * @return SeoMetadata
+     */
+    public function getSeoMetadata($content);
+
     /**
      * Updates the Sonata SeoPage service with the data retrieved from the $content.
      *

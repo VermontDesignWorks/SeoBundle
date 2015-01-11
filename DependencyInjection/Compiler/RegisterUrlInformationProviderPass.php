@@ -17,6 +17,10 @@ use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
+ * Compiler adds custom url information provider to the phpcr chain provider.
+ *
+ * To do so you need to tag them with "cmf_seo.sitemap.url_information_provider".
+ *
  * @author Maximilian Berghoff <Maximilian.Berghoff@gmx.de>
  */
 class RegisterUrlInformationProviderPass implements CompilerPassInterface

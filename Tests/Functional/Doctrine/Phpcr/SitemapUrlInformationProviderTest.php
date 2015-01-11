@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr\SitemapUrlInformationProvider;
 use Symfony\Cmf\Bundle\SeoBundle\Model\AlternateLocale;
+use Symfony\Cmf\Bundle\SeoBundle\Model\SeoMetadata;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
 /**
@@ -28,6 +29,8 @@ class SitemapUrlInformationProviderTest extends BaseTestCase
 
     protected $logger;
 
+    protected $presentation;
+
     public function setUp()
     {
         $this->db('PHPCR')->createTestNode();
@@ -39,13 +42,15 @@ class SitemapUrlInformationProviderTest extends BaseTestCase
         ));
 
         $this->logger = $this->getMock('Psr\Log\LoggerInterface');
+        $this->presentation = $this->getMock('\Symfony\Cmf\Bundle\SeoBundle\SeoPresentationInterface');
 
         $this->provider = new SitemapUrlInformationProvider(
             $this->dm,
             $this->getContainer()->get('router'),
             $this->getContainer()->get('cmf_core.publish_workflow.checker'),
             'always',
-            $this->logger
+            $this->logger,
+            $this->presentation
         );
         $this->alternateLocaleProvider = $this->getMock('\Symfony\Cmf\Bundle\SeoBundle\AlternateLocaleProviderInterface');
         $this->provider->setAlternateLocaleProvider($this->alternateLocaleProvider);
@@ -59,6 +64,10 @@ class SitemapUrlInformationProviderTest extends BaseTestCase
 
     public function testRouteGeneration()
     {
+        $this->presentation
+            ->expects($this->any())
+            ->method('getSeoMetadata')
+            ->will($this->returnValue(new SeoMetadata()));
         $routeInformation = $this->provider->generateRoutes();
 
         $this->assertCount(2, $routeInformation);

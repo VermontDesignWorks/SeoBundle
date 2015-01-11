@@ -16,6 +16,7 @@
             <argument type="service" id="cmf_core.publish_workflow.checker" />
             <argument>%cmf_seo.sitemap.default_change_frequency%</argument>
             <argument type="service" id="logger" />
+            <argument type="service" id="cmf_seo.presentation" />
 
             <tag name="cmf_seo.sitemap.url_information_provider" />
         </service>
