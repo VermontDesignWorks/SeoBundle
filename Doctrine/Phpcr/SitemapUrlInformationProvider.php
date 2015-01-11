@@ -21,7 +21,6 @@ use Symfony\Cmf\Bundle\SeoBundle\Extractor\ExtractorInterface;
 use Symfony\Cmf\Bundle\SeoBundle\Model\UrlInformation;
 use Symfony\Cmf\Bundle\SeoBundle\SeoPresentationInterface;
 use Symfony\Cmf\Bundle\SeoBundle\Sitemap\UrlInformationProviderInterface;
-use Symfony\Cmf\Bundle\SeoBundle\Tests\Resources\Document\SeoAwareContent;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 

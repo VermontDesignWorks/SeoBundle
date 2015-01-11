@@ -64,12 +64,43 @@ class SitemapUrlInformationProviderTest extends BaseTestCase
 
     public function testRouteGeneration()
     {
+        // expected methods/class
+        $seoMetadata = $this->getMock('Symfony\Cmf\Bundle\SeoBundle\Model\SeoMetadataInterface');
         $this->presentation
             ->expects($this->any())
             ->method('getSeoMetadata')
-            ->will($this->returnValue(new SeoMetadata()));
+            ->will($this->returnValue($seoMetadata));
+        $seoMetadata->expects($this->any())->method('getTitle')->will($this->returnValue('test-title'));
+
         $routeInformation = $this->provider->generateRoutes();
 
         $this->assertCount(2, $routeInformation);
+        $actualValues = array();
+        foreach ($routeInformation as $information) {
+            $actualValues[] = $information->toArray();
+        }
+        $expectedValues = array(
+            array(
+                'loc' => 'http://localhost/sitemap-aware',
+                'label' => 'test-title',
+                'changefreq' => 'always',
+                'lastmod'  => '',
+                'priority' => '',
+                'alternate_locales' => array(
+                    array('href' => 'test', 'href_locale' => 'de'),
+                ),
+            ),
+            array(
+                'loc' => 'http://localhost/sitemap-aware-publish',
+                'label' => 'test-title',
+                'changefreq' => 'always',
+                'lastmod'  => '',
+                'priority' => '',
+                'alternate_locales' => array(
+                    array('href' => 'test', 'href_locale' => 'de'),
+                ),
+            ),
+        );
+        $this->assertEquals($expectedValues, $actualValues);
     }
 }
